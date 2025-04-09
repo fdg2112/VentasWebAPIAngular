@@ -59,5 +59,60 @@ namespace WSVentas.Controllers
                 return NotFound(respuesta);
             }
         }
+
+        [HttpPut]
+        public IActionResult Update(ClienteRequest clienteRequest)
+        {
+            Respuesta respuesta = new Respuesta();
+            try
+            {
+                var cliente = _context.Clientes.Find(clienteRequest.Id);
+                if (cliente == null)
+                {
+                    respuesta.Exito = false;
+                    respuesta.Mensaje = "Cliente no encontrado.";
+                    return NotFound(respuesta);
+                }
+                cliente.Nombre = clienteRequest.Nombre;
+                _context.Clientes.Update(cliente);
+                _context.SaveChanges();
+                respuesta.Exito = true;
+                respuesta.Mensaje = "Actualización exitosa";
+                return Ok(respuesta);
+            }
+            catch (Exception ex)
+            {
+                respuesta.Exito = false;
+                respuesta.Mensaje = "No se pudo actualizar el cliente. Detalle: " + ex.Message;
+                return NotFound(respuesta);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            Respuesta respuesta = new Respuesta();
+            try
+            {
+                var cliente = _context.Clientes.Find(id);
+                if (cliente == null)
+                {
+                    respuesta.Exito = false;
+                    respuesta.Mensaje = "Cliente no encontrado.";
+                    return NotFound(respuesta);
+                }
+                _context.Clientes.Remove(cliente);
+                _context.SaveChanges();
+                respuesta.Exito = true;
+                respuesta.Mensaje = "Eliminación exitosa";
+                return Ok(respuesta);
+            }
+            catch (Exception ex)
+            {
+                respuesta.Exito = false;
+                respuesta.Mensaje = "No se pudo eliminar el cliente. Detalle: " + ex.Message;
+                return NotFound(respuesta);
+            }
+        }
     }
 }
