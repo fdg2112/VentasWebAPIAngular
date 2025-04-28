@@ -1,0 +1,53 @@
+// Estilo para el diálogo de eliminación
+::ng-deep .mat-dialog-container {
+    border-radius: 12px;
+    padding: 24px;
+    background: #fff0f0; // un rojito muy suave
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  ::ng-deep h1[mat-dialog-title] {
+    color: #c62828; // rojo fuerte
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+  
+  ::ng-deep div[mat-dialog-content] {
+    color: #444;
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: 20px;
+  }
+  
+  ::ng-deep div[mat-dialog-actions] {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+  
+  ::ng-deep button[mat-button] {
+    font-weight: bold;
+    padding: 6px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  ::ng-deep button[mat-button][mat-dialog-close="false"] {
+    background-color: #e0e0e0;
+    color: #333;
+  
+    &:hover {
+      background-color: #d5d5d5;
+    }
+  }
+  
+  ::ng-deep button[mat-button][mat-dialog-close="true"] {
+    background-color: #d32f2f;
+    color: white;
+  
+    &:hover {
+      background-color: #b71c1c;
+    }
+  }
+  

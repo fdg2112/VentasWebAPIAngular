@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Eliminar</h1>
+<div mat-dialog-content>
+  <p>¿Está seguro de que desea eliminar este elemento?</p>
+  <p>Esta acción no se puede deshacer.</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button cdkFocusInitial [mat-dialog-close]="false">Cancelar</button>
+  <button mat-button [mat-dialog-close]="true">Eliminar</button>
+</div>

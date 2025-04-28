@@ -4,11 +4,13 @@ using WSVentas.Data;
 using WSVentas.Models.Response;
 using WSVentas.Models.Request;
 using WSVentas.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WSVentas.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClienteController : ControllerBase
     {
         private readonly VentasDbContext _context;
@@ -21,10 +23,10 @@ namespace WSVentas.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            Respuesta respuesta = new Respuesta();
+            Response respuesta = new Response();
             try
             {
-                var clientes = _context.Clientes.ToList();
+                var clientes = _context.Clientes.OrderByDescending(c => c.Id).ToList();
                 respuesta.Exito = true;
                 respuesta.Mensaje = "Se encontraron clientes.";
                 respuesta.Datos = clientes;
@@ -41,7 +43,7 @@ namespace WSVentas.Controllers
         [HttpPost]
         public IActionResult Add(ClienteRequest clienteRequest)
         {
-            Respuesta respuesta = new Respuesta();
+            Response respuesta = new Response();
             try
             {
                 Cliente cliente = new Cliente();
@@ -60,22 +62,24 @@ namespace WSVentas.Controllers
             }
         }
 
-        [HttpPut]
-        public IActionResult Update(ClienteRequest clienteRequest)
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] ClienteRequest clienteRequest)
         {
-            Respuesta respuesta = new Respuesta();
+            var respuesta = new Response();
             try
             {
-                var cliente = _context.Clientes.Find(clienteRequest.Id);
+                var cliente = _context.Clientes.Find(id);
                 if (cliente == null)
                 {
                     respuesta.Exito = false;
                     respuesta.Mensaje = "Cliente no encontrado.";
                     return NotFound(respuesta);
                 }
+
                 cliente.Nombre = clienteRequest.Nombre;
                 _context.Clientes.Update(cliente);
                 _context.SaveChanges();
+
                 respuesta.Exito = true;
                 respuesta.Mensaje = "Actualización exitosa";
                 return Ok(respuesta);
@@ -88,10 +92,11 @@ namespace WSVentas.Controllers
             }
         }
 
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            Respuesta respuesta = new Respuesta();
+            Response respuesta = new Response();
             try
             {
                 var cliente = _context.Clientes.Find(id);
